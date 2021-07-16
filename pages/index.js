@@ -24,6 +24,40 @@ function ProfileSideBar(propriedades) {
   )
 }
 
+function ProfileRelations({ title, relations }) {
+  return (
+    <ProfileRelationsBoxWrapper>
+      <h2 className="smallTitle">
+        {title} ({relations.length})
+      </h2>
+
+      <ul>
+        {relations.slice(0, 6).map((itemAtual) => {
+          return (
+            <li key={itemAtual.id}>
+              <a href={`/users/${itemAtual.title}`}>
+                <img src={itemAtual.image} />
+                <span>{itemAtual.title}</span>
+              </a>
+            </li>
+          )
+        })}
+      </ul>
+    </ProfileRelationsBoxWrapper>
+  )
+}
+
+function convertUsersToRelations(stringList) {
+  return (stringList.map((string) => {
+    return (
+      {
+        id: string,
+        title: string,
+        image: `https://github.com/${string}.png`
+      })
+  }));
+}
+
 export default function Home() {
   // const comunidades = ["Alurakut"];
   const [comunidades, setComunidades] = React.useState([{
@@ -82,43 +116,8 @@ export default function Home() {
           </Box>
         </div>
         <div className='profileRelationsArea' style={{ gridArea: 'profileRelationsArea' }}>
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Comunidades ({comunidades.length})
-            </h2>
-
-            <ul>
-              {comunidades.map((itemAtual) => {
-                return (
-                  <li key={itemAtual.id}>
-                    <a href={`/users/${itemAtual.title}`}>
-                      <img src={itemAtual.image} />
-                      <span>{itemAtual.title}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
-
-          <ProfileRelationsBoxWrapper>
-            <h2 className="smallTitle">
-              Pessoas da comunidade ({pessoasFavoritas.length})
-            </h2>
-
-            <ul>
-              {pessoasFavoritas.map((itemAtual) => {
-                return (
-                  <li key={itemAtual}>
-                    <a href={`/users/${itemAtual}`}>
-                      <img src={`https://github.com/${itemAtual}.png`} />
-                      <span>{itemAtual}</span>
-                    </a>
-                  </li>
-                )
-              })}
-            </ul>
-          </ProfileRelationsBoxWrapper>
+          <ProfileRelations title="Comunidades" relations={comunidades} />
+          <ProfileRelations title="Pessoas da comunidade" relations={convertUsersToRelations(pessoasFavoritas)} />
         </div>
       </MainGrid>
     </>
