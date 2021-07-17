@@ -22,3 +22,16 @@ $ yarn dev
 ### Trabalhando com state
   * utilizando o `[objeto, função set] = React.useState(...)` para criar e manipular objetos observáveis
 
+
+## Aula 03
+
+### Fazendo requests com o fetch
+  * funcionamento da função fetch
+  * trabalhando com Promises em cadeia com o `.then(fun)`
+  * capturando erros com o `.catch(fun)`
+
+### Usando o useEffect
+  * usando o React.useEffect(fun, []) para chamar a função que populará a lista de seguidores após render da página (e sem ficar em looping)
+    texto extraído da doc do ReactJS (https://pt-br.reactjs.org/docs/hooks-reference.html#useeffect)
+    "Se você passar um array vazio ([]), a props e o state passados dentro do efeito sempre terão seus valores iniciais. Enquanto passando [] como segundo parâmetro aproxima-se do modelo mental familiar de componentDidMount e componentWillUnmount, geralmente hás melhores soluções para evitar efeitos repetidos com muita freqüência. Além disso, não esqueça de que o React adia a execução do useEffect até o navegador ser pintado, então fazer trabalho extra é menos problemático."
+

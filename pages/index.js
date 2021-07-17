@@ -8,7 +8,7 @@ function ProfileSideBar(propriedades) {
   console.log(propriedades);
 
   return (
-    <Box>
+    <Box as="aside">
       <img src={`https://github.com/${propriedades.githubUser}.png`} style={{ borderRadius: '8px' }} />
       <hr />
 
@@ -66,6 +66,20 @@ export default function Home() {
     image: "http://placehold.it/300x300"
   }]);
 
+  const [seguidores, setSeguidores] = React.useState([]);
+
+  React.useEffect(function () {
+    fetch('https://api.github.com/users/luizlopes/followers')
+      .then(function (respostaDoServidor) {
+        return respostaDoServidor.json();
+      })
+      .then(function (respostaCompleta) {
+        console.log(respostaCompleta);
+        const logins = respostaCompleta.map((contaGitHub) => { return contaGitHub.login; })
+        return setSeguidores(logins);
+      })
+  }, []);
+
   const githubUser = "luizlopes";
   const pessoasFavoritas = ["juunegreiros", "peas", "omariosouto"];
 
@@ -118,6 +132,7 @@ export default function Home() {
         <div className='profileRelationsArea' style={{ gridArea: 'profileRelationsArea' }}>
           <ProfileRelations title="Comunidades" relations={comunidades} />
           <ProfileRelations title="Pessoas da comunidade" relations={convertUsersToRelations(pessoasFavoritas)} />
+          <ProfileRelations title="Meus seguidores" relations={convertUsersToRelations(seguidores)} />
         </div>
       </MainGrid>
     </>
