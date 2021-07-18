@@ -36,7 +36,7 @@ function ProfileRelations({ title, relations }) {
           return (
             <li key={itemAtual.id}>
               <a href={`/users/${itemAtual.title}`}>
-                <img src={itemAtual.image} />
+                <img src={itemAtual.imageUrl} />
                 <span>{itemAtual.title}</span>
               </a>
             </li>
@@ -53,19 +53,13 @@ function convertUsersToRelations(stringList) {
       {
         id: string,
         title: string,
-        image: `https://github.com/${string}.png`
+        imageUrl: `https://github.com/${string}.png`
       })
   }));
 }
 
 export default function Home() {
-  // const comunidades = ["Alurakut"];
-  const [comunidades, setComunidades] = React.useState([{
-    id: 12312312312,
-    title: "Alurakut",
-    image: "http://placehold.it/300x300"
-  }]);
-
+  const [comunidades, setComunidades] = React.useState([]);
   const [seguidores, setSeguidores] = React.useState([]);
 
   React.useEffect(function () {
@@ -77,6 +71,30 @@ export default function Home() {
         console.log(respostaCompleta);
         const logins = respostaCompleta.map((contaGitHub) => { return contaGitHub.login; })
         return setSeguidores(logins);
+      });
+
+    fetch('https://graphql.datocms.com/', {
+      method: 'POST',
+      headers: {
+        'Authorization': '46a95fc168dffadc06a0c2361ccef8',
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify({
+        "query": `query {
+        allCommunities {
+          title
+          id
+          imageUrl
+          creatorSlug
+        }
+      }
+      ` })
+    })
+      .then((response) => response.json())
+      .then((json) => {
+        console.log(json.data.allCommunities);
+        setComunidades(json.data.allCommunities);
       })
   }, []);
 
@@ -102,12 +120,24 @@ export default function Home() {
             <form onSubmit={function handleCriaComunidade(event) {
               event.preventDefault();
               const formData = new FormData(event.target);
+
               const comunidade = {
-                id: new Date().toISOString(),
                 title: formData.get('title'),
-                image: formData.get('image')
+                imageUrl: formData.get('image'),
+                creatorSlug: githubUser
               };
-              setComunidades([...comunidades, comunidade])
+
+              fetch('/api/comunidades', {
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(comunidade)
+              }).then(async (response) => {
+                const dados = await response.json();
+                console.log(dados);
+                setComunidades([...comunidades, dados.comunidade])
+              })
             }}>
               <div>
                 <input

@@ -35,3 +35,7 @@ $ yarn dev
     texto extraído da doc do ReactJS (https://pt-br.reactjs.org/docs/hooks-reference.html#useeffect)
     "Se você passar um array vazio ([]), a props e o state passados dentro do efeito sempre terão seus valores iniciais. Enquanto passando [] como segundo parâmetro aproxima-se do modelo mental familiar de componentDidMount e componentWillUnmount, geralmente hás melhores soluções para evitar efeitos repetidos com muita freqüência. Além disso, não esqueça de que o React adia a execução do useEffect até o navegador ser pintado, então fazer trabalho extra é menos problemático."
 
+
+## Aula 04
+
+###
