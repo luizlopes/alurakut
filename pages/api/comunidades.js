@@ -1,7 +1,15 @@
+import { config } from 'dotenv';
 import { SiteClient } from 'datocms-client';
 
 export default async function handler(request, response) {
-  const TOKEN = 'put token here';
+  if (request.method != 'POST') {
+    response.status(404).json({
+      message: 'Method not allowed'
+    });
+    return;
+  }
+
+  const TOKEN = process.env.DATO_CMS_TOKEN;
   const client = new SiteClient(TOKEN);
 
   const comunidade = {
